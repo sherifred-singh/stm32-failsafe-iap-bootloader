@@ -1,7 +1,7 @@
-# 🛡️ Failsafe IAP Dual-Slot Bootloader with Hardware CRC-32 & Watchdog Rollback
+﻿# ðŸ›¡ï¸ Failsafe IAP Dual-Slot Bootloader with Hardware CRC-32 & Watchdog Rollback
 ### *Production-Grade In-Application Programming (IAP) Engine for STM32F446RE (ARM Cortex-M4 @ 180 MHz)*
 
-[![CI Bootloader Verification Suite](https://img.shields.io/badge/CI%20Build-Passing-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/Sherifred123/stm32-failsafe-iap-bootloader/actions)
+[![CI Bootloader Verification Suite](https://img.shields.io/badge/CI%20Build-Passing-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/sherifred-singh/stm32-failsafe-iap-bootloader/actions)
 [![Language](https://img.shields.io/badge/Language-Embedded%20C%20(C99)-00599C?style=for-the-badge&logo=c&logoColor=white)](https://en.wikipedia.org/wiki/C_(programming_language))
 [![Target Architecture](https://img.shields.io/badge/Target-STM32F446RE%20%2F%20Cortex--M4-032347?style=for-the-badge&logo=stmicroelectronics&logoColor=white)](https://www.st.com)
 [![Integrity Engine](https://img.shields.io/badge/Integrity-Hardware%20CRC--32%20(0x04C11DB7)-orange?style=for-the-badge)]()
@@ -13,7 +13,7 @@
 
 ---
 
-## 📌 System Architecture
+## ðŸ“Œ System Architecture
 
 <p align="center">
   <img src="docs/architecture.svg" alt="Failsafe IAP Bootloader Architecture" width="100%">
@@ -21,7 +21,7 @@
 
 ---
 
-## 📑 Table of Contents
+## ðŸ“‘ Table of Contents
 
 - [1. System Overview & Problem Statement](#1-system-overview--problem-statement)
 - [2. Flash Memory Partitioning Map (512 KB)](#2-flash-memory-partitioning-map-512-kb)
@@ -99,29 +99,29 @@ Before transferring execution control to any slot, the bootloader performs stric
 ## 4. Dual-Slot State Machine & Rollback Policy
 
 ```
-      ┌────────────────┐
-      │  SLOT_EMPTY    │  (Flash unprogrammed, 0xFF)
-      └───────┬────────┘
-              │ Flashed via IAP Server
-              ▼
-      ┌────────────────┐
-      │   SLOT_VALID   │  (Static CRC and MSP verified)
-      └───────┬────────┘
-              │ Bootloader Launches Probation Boot
-              ▼
-      ┌────────────────┐
-      │  SLOT_TESTING  │◄───────────────────────────┐
-      └───────┬────────┘                            │ Reboot / Watchdog Trip
-              │                                     │ (attempts <= 3)
-              ├─────────────────────────────────────┘
-              │
-              ├── Application calls bootloader_confirm() ──► ┌──────────────────┐
-              │                                              │  SLOT_CONFIRMED  │ (Golden Image)
-              │                                              └──────────────────┘
-              │
-              └── Attempts > 3 (Repeated Crash / IWDG)  ──► ┌───────────────────┐
-                                                            │  SLOT_ROLLED_BACK │ (Lockout -> Alternate)
-                                                            └───────────────────┘
+      â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+      â”‚  SLOT_EMPTY    â”‚  (Flash unprogrammed, 0xFF)
+      â””â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+              â”‚ Flashed via IAP Server
+              â–¼
+      â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+      â”‚   SLOT_VALID   â”‚  (Static CRC and MSP verified)
+      â””â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+              â”‚ Bootloader Launches Probation Boot
+              â–¼
+      â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+      â”‚  SLOT_TESTING  â”‚â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+      â””â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜                            â”‚ Reboot / Watchdog Trip
+              â”‚                                     â”‚ (attempts <= 3)
+              â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+              â”‚
+              â”œâ”€â”€ Application calls bootloader_confirm() â”€â”€â–º â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+              â”‚                                              â”‚  SLOT_CONFIRMED  â”‚ (Golden Image)
+              â”‚                                              â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+              â”‚
+              â””â”€â”€ Attempts > 3 (Repeated Crash / IWDG)  â”€â”€â–º â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                                                            â”‚  SLOT_ROLLED_BACK â”‚ (Lockout -> Alternate)
+                                                            â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 - **Probation Window:** Upon booting an unconfirmed update, `boot_attempts` is incremented and saved to Sector 2.
@@ -187,7 +187,7 @@ boot_status_t bootloader_launch_application(uint8_t slot_idx)
 
 ## 7. Automated Verification & Test Results
 
-### 🧪 Unity C Unit Test Suite (10/10 Passing)
+### ðŸ§ª Unity C Unit Test Suite (10/10 Passing)
 ```text
 ------------------------------------------------------------
    UNITY UNIT TEST EXECUTION: STM32F446RE Failsafe IAP Bootloader
@@ -209,7 +209,7 @@ boot_status_t bootloader_launch_application(uint8_t slot_idx)
 ============================================================
 ```
 
-### 📊 Desktop Execution Benchmark Output
+### ðŸ“Š Desktop Execution Benchmark Output
 ```text
 ============================================================
    STM32F446RE Failsafe IAP Bootloader Simulation Harness
@@ -241,7 +241,7 @@ boot_status_t bootloader_launch_application(uint8_t slot_idx)
 
 ### 1. Build and Run Host Simulation
 ```bash
-git clone https://github.com/Sherifred123/stm32-failsafe-iap-bootloader.git
+git clone https://github.com/sherifred-singh/stm32-failsafe-iap-bootloader.git
 cd stm32-failsafe-iap-bootloader
 
 # Compile and run host simulation
@@ -280,7 +280,8 @@ Staging boot metadata in Sector 2 ($16\,\text{KB}$) isolates dynamic boot counte
 
 ---
 
-## 📄 License
+## ðŸ“„ License
 
 This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.  
 Designed and engineered by **Sherifred Singh**.
+
